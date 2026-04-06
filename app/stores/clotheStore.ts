@@ -68,5 +68,11 @@ export const useClotheStore = defineStore("clotheStore", {
       this.usedLimit = settings.getUsedLimit() ?? 4;
       this.washLimit = settings.getWashLimit() ?? 5;
     },
+
+    saveClothesSettings(): void {
+      settings.setFreshLimit(this.freshLimit);
+      settings.setUsedLimit(this.usedLimit);
+      settings.setWashLimit(this.washLimit);
+    },
   },
 });

@@ -1,8 +1,8 @@
 export enum ClotheType {
-  SHIRT = "shirt",
-  PANT = "pant",
-  SOCK = "sock",
-  UNDERWEAR = "underwear",
+  SHIRT = "Shirt",
+  PANT = "Pant",
+  SOCK = "Sock",
+  UNDERWEAR = "Underwear",
 }
 
 export interface Clothe {

@@ -1,15 +1,7 @@
 <template>
-  <nav
-    class="fixed top-0 shadow-xl w-full bg-gray-200 h-10 grid grid-cols-3 px-3"
-  >
+  <nav class="fixed top-0 shadow-md w-full bg-white h-10 grid grid-cols-3 px-3">
     <div class="flex items-center">
-      <Icon
-        v-if="store.showBackButton"
-        name="mdi:arrow-back"
-        class="text-3xl"
-        @click="router.back()"
-      />
-      <span v-else></span>
+      <span></span>
     </div>
     <div class="flex items-center justify-center font-bold text-2xl">
       LaundryMator
@@ -32,19 +24,11 @@
     </div>
     <div class="font-bold mt-2">This action cannot be undone!.</div>
     <template #footer>
-      <button
-        class="bg-red-500 text-white p-2 rounded-md"
-        @click="clearStorage"
-      >
-        Clear
-      </button>
+      <SimpleButton color="danger" @click="clearStorage"> Clear </SimpleButton>
     </template>
   </BaseModal>
 </template>
 <script lang="ts" setup>
-const router = useRouter();
-const store = useNavbarStore();
-
 const storage = useClotheStore();
 
 const isClearModalOpen = ref(false);

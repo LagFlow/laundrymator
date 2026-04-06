@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-screen">
+  <div class="flex flex-col h-screen pt-10">
     <HeaderBar />
     <NuxtPage />
   </div>

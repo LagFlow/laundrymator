@@ -1,41 +1,39 @@
 <template>
-  <div>
+  <div class="flex h-full flex-col">
     <div v-if="isLoading">Loading...</div>
-    <div v-else>
-      <div v-if="clothes?.length > 0" class="flex flex-col gap-4 p-4">
-        <h1 class="text-2xl font-bold">Your Wardrobe</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <ClotheItem
-            v-for="clothe in clothes"
-            :key="clothe.id"
-            :clothe="clothe"
-            @click="handleClotheClick(clothe)"
-          />
-        </div>
-        <div class="mt-4">
-          <NuxtLink
-            to="/clothes/create"
-            class="bg-blue-500 text-white rounded p-2 hover:bg-blue-600 transition-colors"
-          >
-            Add new clothe
-          </NuxtLink>
-        </div>
+    <div v-else-if="clothes?.length > 0" class="flex flex-col gap-4 p-4">
+      <h1 class="text-2xl font-bold">Your Wardrobe</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <ClotheItem
+          v-for="clothe in clothes"
+          :key="clothe.id"
+          :clothe="clothe"
+          @click="handleClotheClick(clothe)"
+        />
       </div>
-      <div
-        class="bg-red-500 h-screen flex flex-col gap-4 p-8 items-center justify-center text-center"
-        v-else
-      >
-        <div>
-          Manage all you clothes, and keep track of how many times have you used
-          each one, and when is time to wash it again.
-        </div>
-        <NuxtLink
+      <div class="mt-4">
+        <SimpleButton @click="router.push('/clothes/create')">
+          Add new clothe
+        </SimpleButton>
+        <!-- <NuxtLink
           to="/clothes/create"
-          class="bg-gray-700 text-white rounded-xl p-2"
+          class="bg-blue-500 text-white rounded p-2 hover:bg-blue-600 transition-colors"
         >
-          Create my first clothe!
-        </NuxtLink>
+          Add new clothe
+        </NuxtLink> -->
       </div>
+    </div>
+    <div
+      v-else
+      class="h-full flex flex-col gap-4 p-8 items-center justify-center"
+    >
+      <div>
+        Manage all you clothes, and keep track of how many times have you used
+        each one, and when is time to wash it again.
+      </div>
+      <SimpleButton color="primary" @click="router.push('/clothes/create')">
+        Create my first clothe!
+      </SimpleButton>
     </div>
   </div>
 </template>

@@ -1,43 +1,52 @@
 <template>
   <aside
     v-if="isVisible"
-    class="bg-white fixed w-[250px] right-0 h-screen flex flex-col gap-4 transition-all duration-100 shadow-lg"
+    class="bg-white fixed w-[250px] right-0 top-0 h-screen flex flex-col transition-all duration-100 shadow-lg"
   >
-    <div class="grid grid-cols-3 p-2">
-      <div class="col-span-2 justify-self-end font-bold">Settings</div>
-      <div class="justify-self-end">
-        <Icon name="material-symbols:close" @click="emit('close')" />
-      </div>
+    <div class="grid grid-cols-3">
+      <span></span>
+      <div class="font-bold">Settings</div>
+      <Icon
+        name="material-symbols:close"
+        @click="emit('close')"
+        class="h-full align-middle justify-self-end"
+      />
     </div>
-    <Form @submit="updateClotheSettings">
-      <div class="flex flex-col p-2 gap-1">
-        <label for="refresh-limit">Refresh Limit</label>
+    <form @submit="updateClotheSettings">
+      <div class="flex flex-col px-2 gap-2 mt-4">
+        <label for="freshLimit">Fresh Limit</label>
         <Field
           type="number"
           v-model="clotheStore.freshLimit"
-          name="fresh-limit"
+          id="freshLimit"
+          name="freshLimit"
           class="border border-gray-500 rounded-md px-2"
           min="1"
         />
-        <label for="used-limit">Used Limit</label>
+        <ErrorMessage name="freshLimit" class="text-red-500 text-sm" />
+        <label for="usedLimit">Used Limit</label>
         <Field
           type="number"
           v-model="clotheStore.usedLimit"
-          name="used-limit"
+          id="usedLimit"
+          name="usedLimit"
           class="border border-gray-500 rounded-md px-2"
           min="1"
         />
-        <label for="wash-limit">Wash Limit</label>
+        <ErrorMessage name="usedLimit" class="text-red-500 text-sm" />
+        <label for="washLimit">Wash Limit</label>
         <Field
           type="number"
           v-model="clotheStore.washLimit"
-          name="wash-limit"
+          id="washLimit"
+          name="washLimit"
           class="border border-gray-500 rounded-md px-2"
           min="1"
         />
-        <button type="submit">Apply</button>
+        <ErrorMessage name="washLimit" class="text-red-500 text-sm" />
+        <SimpleButton type="submit">Apply</SimpleButton>
       </div>
-    </Form>
+    </form>
     <hr class="mt-auto" />
     <div
       class="flex items-center gap-2 hover:bg-gray-200 p-2"
@@ -63,16 +72,29 @@ const emit = defineEmits(["close", "clearStorage"]);
 const schema = toTypedSchema(
   zod
     .object({
-      freshLimit: zod.number().min(1),
+      freshLimit: zod.number().min(1, "Fresh limit must be at least 1"),
       usedLimit: zod.number(),
-      washLimit: zod.number().max(100),
+      washLimit: zod.number().max(100, "Wash limit must be at most 100"),
     })
-    .refine((data) => data.usedLimit <= data.freshLimit, {
-      message: "",
+    .refine((data) => data.usedLimit > data.freshLimit, {
+      message: "Used limit can't be smaller than fresh limit",
+      path: ["usedLimit"],
+    })
+    .refine((data) => data.washLimit > data.usedLimit, {
+      message: "Wash limit can't be smaller than used limit",
+      path: ["washLimit"],
     }),
 );
 
-function updateClotheSettings() {
-  alert("update");
-}
+const { handleSubmit, errors } = useForm({
+  validationSchema: schema,
+});
+
+const updateClotheSettings = handleSubmit((values) => {
+  clotheStore.freshLimit = values.freshLimit;
+  clotheStore.usedLimit = values.usedLimit;
+  clotheStore.washLimit = values.washLimit;
+
+  clotheStore.saveClothesSettings();
+});
 </script>
