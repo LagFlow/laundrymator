@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col h-screen pt-10">
+  <div class="flex flex-col h-screen pt-10 bg-gray-50 overflow-hidden">
     <HeaderBar />
-    <NuxtPage />
+    <NuxtPage class="overflow-auto" />
   </div>
 </template>
 <script lang="ts" setup>

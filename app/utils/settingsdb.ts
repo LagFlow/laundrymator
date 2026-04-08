@@ -1,7 +1,6 @@
 import { Settings } from "~/interfaces/settings.interface";
 
 export function setFreshLimit(limit: number): void {
-  console.log("gg?");
   localStorage.setItem(Settings.FRESH_LIMIT, limit.toString());
 }
 
