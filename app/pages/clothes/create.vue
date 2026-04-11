@@ -1,5 +1,7 @@
 <template>
-  <ClotheForm @submit="onSubmit" />
+  <div class="container bg-white mx-auto">
+    <ClotheForm @submit="onSubmit" />
+  </div>
 </template>
 
 <script setup>

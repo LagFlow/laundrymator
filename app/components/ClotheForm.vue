@@ -65,18 +65,21 @@
       />
     </div>
 
-    <SimpleButton type="submit" :disabled="isSubmitting">
-      {{ isEditMode ? "Update Clothe" : "Create Clothe" }}
-    </SimpleButton>
-
-    <NuxtLink to="/" class="text-blue-500 hover:underline text-center text-sm">
-      Cancel and back
-    </NuxtLink>
+    <div class="flex justify-between">
+      <SimpleButton @click="router.back()" variant="ghost" color="secondary">
+        Cancel
+      </SimpleButton>
+      <SimpleButton type="submit" :disabled="isSubmitting">
+        {{ isEditMode ? "Update" : "Create" }}
+      </SimpleButton>
+    </div>
   </Form>
 </template>
 
 <script setup>
 import { ClotheType } from "~/interfaces/clothe.interface";
+
+const router = useRouter();
 
 const props = defineProps({
   initialData: {

@@ -1,7 +1,13 @@
 <template>
   <nav class="fixed top-0 shadow-md w-full bg-white h-10 grid grid-cols-3 px-3">
     <div class="flex items-center">
-      <span></span>
+      <Icon
+        v-if="showBackButton"
+        name="material-symbols:arrow-back"
+        class="text-3xl cursor-pointer"
+        @click="router.back()"
+      />
+      <span v-else></span>
     </div>
     <div class="flex items-center justify-center font-bold text-2xl">
       LaundryMator
@@ -30,6 +36,8 @@
 </template>
 <script lang="ts" setup>
 const storage = useClotheStore();
+const route = useRoute();
+const router = useRouter();
 
 const isClearModalOpen = ref(false);
 const isSideMenuVisible = ref(false);
@@ -37,6 +45,10 @@ const isSideMenuVisible = ref(false);
 function showClearModal() {
   isClearModalOpen.value = true;
 }
+
+const showBackButton = computed(() => {
+  return route.path !== "/";
+});
 
 async function clearStorage() {
   try {

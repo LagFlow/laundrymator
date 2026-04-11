@@ -17,20 +17,28 @@
           <div class="text-sm font-light">{{ clothe.type }}</div>
         </div>
         <div class="flex flex-col px-2 gap-2">
-          <div class="mt-2">Usages: {{ clothe.usages }}</div>
-          <div class="text-sm font-light">{{ statusMessage }}</div>
           <div class="flex justify-around">
-            <SimpleButton color="primary" @click="addUsage">
-              <Icon name="mdi:add" />
-            </SimpleButton>
-            <SimpleButton color="warning" @click="resetUsage">
+            <SimpleButton color="warning" @click="resetUsage" class="px-5">
               <Icon name="mdi:reload" />
             </SimpleButton>
+            <div class="mt-2">Usages: {{ clothe.usages }}</div>
+            <SimpleButton color="primary" @click="addUsage" class="px-5">
+              <Icon name="mdi:add" />
+            </SimpleButton>
           </div>
-          <RouterLink :to="`/clothes/edit/${id}`"
-            >Update information</RouterLink
-          >
-          <SimpleButton color="danger">Delete</SimpleButton>
+          <div class="text-center font-bold text-lg">{{ statusMessage }}</div>
+          <div class="flex mt-5 mb-2 gap-4 justify-end items-center">
+            <SimpleButton
+              color="primary"
+              variant="ghost"
+              :to="`/clothes/edit/${id}`"
+            >
+              <Icon name="mdi:edit" />
+            </SimpleButton>
+            <SimpleButton color="danger" variant="ghost">
+              <Icon name="mdi:trash" />
+            </SimpleButton>
+          </div>
         </div>
       </div>
     </div>
