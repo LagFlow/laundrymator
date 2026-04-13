@@ -1,4 +1,5 @@
 <template>
+  <NuxtPwaManifest />
   <div class="flex flex-col h-screen pt-10 bg-gray-50 overflow-hidden">
     <HeaderBar />
     <NuxtPage class="overflow-auto" @back="back" />
