@@ -12,7 +12,7 @@ export const useClotheStore = defineStore("clotheStore", {
 
   actions: {
     async createClothe(clothe: Omit<Clothe, "id">) {
-      const id = crypto.randomUUID();
+      const id = new Date().getTime().toString();
 
       const newClothe = { ...clothe, id } as Clothe;
       await db.createClothe(newClothe);
