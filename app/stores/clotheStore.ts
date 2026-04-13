@@ -17,28 +17,56 @@ export const useClotheStore = defineStore("clotheStore", {
       const newClothe = { ...clothe, id } as Clothe;
       await db.createClothe(newClothe);
 
-      this.clothes.push(newClothe);
+      // Derive a fresh imageUrl from the Blob for the in-memory record.
+      const withUrl: Clothe =
+        newClothe.image instanceof Blob
+          ? { ...newClothe, imageUrl: URL.createObjectURL(newClothe.image) }
+          : newClothe;
+
+      this.clothes.push(withUrl);
     },
 
     async updateClothe(clothe: Clothe): Promise<Clothe> {
       await db.createClothe(clothe);
-      const index = this.clothes.findIndex((c) => c.id === clothe.id);
+
+      // Derive a fresh imageUrl from the Blob for the in-memory record.
+      const withUrl: Clothe =
+        clothe.image instanceof Blob
+          ? { ...clothe, imageUrl: URL.createObjectURL(clothe.image) }
+          : { ...clothe, imageUrl: undefined };
+
+      const index = this.clothes.findIndex((c) => c.id === withUrl.id);
       if (index !== -1) {
-        this.clothes[index] = clothe;
+        this.clothes[index] = withUrl;
       } else {
-        this.clothes.push(clothe);
+        this.clothes.push(withUrl);
       }
-      return clothe;
+      return withUrl;
     },
 
     async getAllClothes(): Promise<Clothe[]> {
       const clothes = await db.getAllClothes();
-      this.clothes = clothes;
+      this.clothes = clothes.map((clothe) => {
+        return {
+          ...clothe,
+          imageUrl: clothe.imageUrl || `/clothes-defaults/${clothe.type}.png`,
+        };
+      });
       return this.clothes;
     },
 
     async getClotheById(id: string): Promise<Clothe | undefined> {
       const clothe = await db.getClothe(id);
+
+      if (clothe) {
+        const withUrl: Clothe =
+          clothe.image instanceof Blob
+            ? { ...clothe, imageUrl: URL.createObjectURL(clothe.image) }
+            : { ...clothe, imageUrl: `/clothes-defaults/${clothe.type}.png` };
+
+        return withUrl;
+      }
+
       return clothe;
     },
 
